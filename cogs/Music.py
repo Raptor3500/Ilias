@@ -42,10 +42,8 @@ async def is_audio_requester(ctx):
 
 class Music:
     """Bot commands to help play music."""
-
-    def __init__(self, bot, config):
+    def __init__(self, bot):
         self.bot = bot
-        self.config = config["music"]
         self.states = {}
 
     def get_state(self, guild):
