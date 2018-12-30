@@ -57,7 +57,6 @@ class Music:
             return self.states[guild.id]
 
     @commands.command(aliases=["stop"])
-    @commands.guild_only()
     @commands.has_permissions(administrator=True)
     async def leave(self, ctx):
         """Leaves the voice channel, if currently in one."""
@@ -71,7 +70,6 @@ class Music:
             raise commands.CommandError("Not in a voice channel.")
 
     @commands.command(aliases=["resume", "p"])
-    @commands.guild_only()
     @commands.check(audio_playing)
     @commands.check(in_voice_channel)
     @commands.check(is_audio_requester)
@@ -87,7 +85,6 @@ class Music:
             bot.pause()
 
     @commands.command(aliases=["vol", "v"])
-    @commands.guild_only()
     @commands.check(audio_playing)
     @commands.check(in_voice_channel)
     @commands.check(is_audio_requester)
@@ -111,7 +108,6 @@ class Music:
         bot.source.volume = state.volume  # update the AudioSource's volume to match
 
     @commands.command()
-    @commands.guild_only()
     @commands.check(audio_playing)
     @commands.check(in_voice_channel)
     async def skip(self, ctx):
@@ -169,7 +165,6 @@ class Music:
         bot.play(source, after=after_playing)
 
     @commands.command(aliases=["np"])
-    @commands.guild_only()
     @commands.check(audio_playing)
     async def nowplaying(self, ctx):
         """Displays information about the current song."""
@@ -178,7 +173,6 @@ class Music:
         await self._add_reaction_controls(message)
 
     @commands.command(aliases=["q", "playlist"])
-    @commands.guild_only()
     @commands.check(audio_playing)
     async def queue(self, ctx):
         """Display the current play queue."""
@@ -198,7 +192,6 @@ class Music:
             return "The play queue is empty."
 
     @commands.command(aliases=["cq"])
-    @commands.guild_only()
     @commands.check(audio_playing)
     @commands.has_permissions(administrator=True)
     async def clearqueue(self, ctx):
@@ -207,7 +200,6 @@ class Music:
         state.playlist = []
 
     @commands.command(aliases=["jq"])
-    @commands.guild_only()
     @commands.check(audio_playing)
     @commands.has_permissions(administrator=True)
     async def jumpqueue(self, ctx, song: int, new_index: int):
@@ -222,7 +214,6 @@ class Music:
             raise commands.CommandError("You must use a valid index.")
 
     @commands.command(brief="Plays audio from <url>.")
-    @commands.guild_only()
     async def play(self, ctx, *, url):
         """Plays audio hosted at <url> (or performs a search for <url> and plays the first result)."""
 
