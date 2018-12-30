@@ -146,9 +146,7 @@ class Music:
             logging.info(f"Enough votes, skipping...")
             channel.guild.voice_client.stop()
 
-    def _play_song(self, bot, state, song, url):
-        player = await vc.create_ytdl_player(url)
-        player.start()
+    def _play_song(self, bot, state, song):
         state.now_playing = song
         state.skip_votes = set()  # clear skip votes
         source = discord.PCMVolumeTransformer(
