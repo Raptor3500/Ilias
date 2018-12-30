@@ -153,7 +153,7 @@ async def yt(ctx, url):
     await vc.create_ytdl_player(url).start()
       
       
-        
-    
+
+      
 
 bot.run(os.environ.get('Token'))
