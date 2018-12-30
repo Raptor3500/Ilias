@@ -4,7 +4,7 @@ from discord.ext.commands import Bot
 import asyncio
 import os
 import random
-import ytdl
+import youtube_dl
 
 startup_extensions = [
   'cogs.message'
