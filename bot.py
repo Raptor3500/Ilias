@@ -155,12 +155,12 @@ async def setgame(str : str, *args):
   if 'playing' in str:
       await bot.change_presence(game=discord.Game(name= (mesg)))
       await bot.say("I am now playing " + mesg)
-  if 'listening to' in str:
+  if 'listening' in str:
       await bot.change_presence(game=discord.Game(name= mesg, type=2))
-      await bot.say("I am now listening to" + mesg)
+      await bot.say("I am now listening to " + mesg)
   if 'watching' in str:
       await bot.change_presence(game=discord.Game(name= mesg, type=3))
-      await bot.say("I am now watching" + mesg)
+      await bot.say("I am now watching " + mesg)
       
       
       
