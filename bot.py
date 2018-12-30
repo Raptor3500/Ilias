@@ -143,6 +143,15 @@ async def setgame(str : str, *args):
       await bot.change_presence(game=discord.Game(name= mesg, type=3))
       await bot.say("I am now watching " + mesg)
       
+@bot.command(pass_context=True)
+async def yt(ctx, url):
+
+    author = ctx.message.author
+    voice_channel = author.voice_channel
+    vc = await bot.join_voice_channel(voice_channel)
+
+    player = await vc.create_ytdl_player(url)
+    player.start()
       
       
         
