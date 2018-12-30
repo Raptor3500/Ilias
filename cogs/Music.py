@@ -5,6 +5,7 @@ import youtube_dl
 import logging
 import math
 from urllib import request
+from video import Video
 
 
 async def audio_playing(ctx):
@@ -44,7 +45,7 @@ class Music:
 
     def __init__(self, bot, config):
         self.bot = bot
-        self.config = config[__main__.split(".")[-1]]
+        self.config = config[____.split(".")[-1]]
         self.states = {}
 
     def get_state(self, guild):
