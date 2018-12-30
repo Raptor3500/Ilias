@@ -5,7 +5,6 @@ import youtube_dl
 import logging
 import math
 from urllib import request
-import config
 
 
 
@@ -301,7 +300,7 @@ class Music:
 class GuildState:
     """Helper class managing per-guild state."""
 
-    def __init__(self):
+    def __init__(self, config):
         self.volume = 1.0
         self.playlist = []
         self.skip_votes = set()
