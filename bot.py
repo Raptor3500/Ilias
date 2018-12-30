@@ -82,25 +82,6 @@ if __name__ == "__main__":
         except Exception as e:
             exc = '{}: {}'.format(type(e).__name__, e)
             print('Failed to load extension {}\n{}'.format(extension, exc))
-            
-@bot.command(pass_context=True)
-async def playing(ctx, *args):
-  if ctx.message.author.id in ownerID:
-    mesg = ' '.join(args)
-    await bot.change_presence(game=discord.Game(name= (mesg)))
-    await bot.say("I am now playing " + mesg)
-    
-@bot.command(pass_context=True)
-async def watching(ctx, *args):
-  if ctx.message.author.id in ownerID:
-    mesg = ' '.join(args)
-    await bot.change_presence(game=discord.Game(name= mesg, type=3))
-    
-@bot.command(pass_context=True)
-async def listening(ctx, *args):
-  if ctx.message.author.id in ownerID:
-    mesg = ' '.join(args)
-    await bot.change_presence(game=discord.Game(name= mesg, type=2))
     
 @bot.command(pass_context=True)
 async def info(ctx, user: discord.Member):
