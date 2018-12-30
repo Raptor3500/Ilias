@@ -5,7 +5,6 @@ import asyncio
 import os
 import random
 import youtube_dl
-import discord.py[voice]
 
 startup_extensions = [
   'cogs.message'
