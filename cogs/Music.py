@@ -45,7 +45,8 @@ class Music:
 
     def __init__(self, bot, config):
         self.bot = bot
-        self.config = config[____.split(".")[-1]]
+        self.config = config[__name__.split(".")[
+            -1]]  # retrieve module name, find config entry
         self.states = {}
 
     def get_state(self, guild):
