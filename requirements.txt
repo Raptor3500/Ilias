@@ -2,3 +2,4 @@ discord.py
 asyncio
 requests
 youtube_dl
+discord.py[voice]
