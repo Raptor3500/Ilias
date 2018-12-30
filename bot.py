@@ -7,7 +7,7 @@ import random
 import youtube_dl
 
 startup_extensions = [
-  'cogs.message', 'cogs.music'
+  'cogs.message', 'cogs.Music'
 ]
 
 bot = commands.Bot(command_prefix='frisk ')
