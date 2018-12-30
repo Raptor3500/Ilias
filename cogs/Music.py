@@ -212,7 +212,7 @@ class Music:
             raise commands.CommandError("You must use a valid index.")
 
     @commands.command(brief="Plays audio from <url>.")
-    async def play(self, ctx, *, url):
+    async def play(self, ctx, args*, url):
         """Plays audio hosted at <url> (or performs a search for <url> and plays the first result)."""
 
         bot = ctx.server.voice_bot
