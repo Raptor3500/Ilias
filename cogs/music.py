@@ -10,8 +10,8 @@ from video import Video
 
 async def audio_playing(ctx):
     """Checks that audio is currently playing before continuing."""
-    client = ctx.guild.voice_client
-    if client and client.channel and client.source:
+    bot = ctx.guild.voice_bot
+    if bot and bot.channel and bot.source:
         return True
     else:
         raise commands.CommandError("Not currently playing any audio.")
@@ -20,7 +20,7 @@ async def audio_playing(ctx):
 async def in_voice_channel(ctx):
     """Checks that the command sender is in the same voice channel as the bot."""
     voice = ctx.author.voice
-    bot_voice = ctx.guild.voice_client
+    bot_voice = ctx.guild.voice_bot
     if voice and bot_voice and voice.channel and bot_voice.channel and voice.channel == bot_voice.channel:
         return True
     else:
@@ -62,10 +62,10 @@ class Music:
     @commands.has_permissions(administrator=True)
     async def leave(self, ctx):
         """Leaves the voice channel, if currently in one."""
-        client = ctx.guild.voice_client
+        bot = ctx.guild.voice_client
         state = self.get_state(ctx.guild)
-        if client and client.channel:
-            await client.disconnect()
+        if bot and bot.channel:
+            await bot.disconnect()
             state.playlist = []
             state.now_playing = None
         else:
@@ -78,14 +78,14 @@ class Music:
     @commands.check(is_audio_requester)
     async def pause(self, ctx):
         """Pauses any currently playing audio."""
-        client = ctx.guild.voice_client
+        bot = ctx.guild.voice_bot
         self._pause_audio(client)
 
-    def _pause_audio(self, client):
-        if client.is_paused():
-            client.resume()
+    def _pause_audio(self, bot):
+        if bot.is_paused():
+            bot.resume()
         else:
-            client.pause()
+            bot.pause()
 
     @commands.command(aliases=["vol", "v"])
     @commands.guild_only()
@@ -106,10 +106,10 @@ class Music:
             if volume > max_vol:
                 volume = max_vol
 
-        client = ctx.guild.voice_client
+        bot = ctx.guild.voice_bot
 
         state.volume = float(volume) / 100.0
-        client.source.volume = state.volume  # update the AudioSource's volume to match
+        bot.source.volume = state.volume  # update the AudioSource's volume to match
 
     @commands.command()
     @commands.guild_only()
@@ -118,14 +118,14 @@ class Music:
     async def skip(self, ctx):
         """Skips the currently playing song, or votes to skip it."""
         state = self.get_state(ctx.guild)
-        client = ctx.guild.voice_client
+        bot = ctx.guild.voice_bot
         if ctx.channel.permissions_for(
                 ctx.author).administrator or state.is_requester(ctx.author):
             # immediately skip if requester or admin
-            client.stop()
+            bot.stop()
         elif self.config["vote_skip"]:
             # vote to skip song
-            channel = client.channel
+            channel = bot.channel
             self._vote_skip(channel, ctx.author)
             # announce vote
             users_in_channel = len([
@@ -153,7 +153,7 @@ class Music:
             logging.info(f"Enough votes, skipping...")
             channel.guild.voice_client.stop()
 
-    def _play_song(self, client, state, song):
+    def _play_song(self, bot, state, song):
         state.now_playing = song
         state.skip_votes = set()  # clear skip votes
         source = discord.PCMVolumeTransformer(
@@ -162,12 +162,12 @@ class Music:
         def after_playing(err):
             if len(state.playlist) > 0:
                 next_song = state.playlist.pop(0)
-                self._play_song(client, state, next_song)
+                self._play_song(bot, state, next_song)
             else:
-                asyncio.run_coroutine_threadsafe(client.disconnect(),
+                asyncio.run_coroutine_threadsafe(bot.disconnect(),
                                                  self.bot.loop)
 
-        client.play(source, after=after_playing)
+        bot.play(source, after=after_playing)
 
     @commands.command(aliases=["np"])
     @commands.guild_only()
@@ -227,10 +227,10 @@ class Music:
     async def play(self, ctx, *, url):
         """Plays audio hosted at <url> (or performs a search for <url> and plays the first result)."""
 
-        client = ctx.guild.voice_client
+        bot = ctx.guild.voice_client
         state = self.get_state(ctx.guild)  # get the guild's state
 
-        if client and client.channel:
+        if bot and bot.channel:
             try:
                 video = Video(url, ctx.author)
             except youtube_dl.DownloadError as e:
@@ -251,8 +251,8 @@ class Music:
                     await ctx.send(
                         "There was an error downloading your video, sorry.")
                     return
-                client = await channel.connect()
-                self._play_song(client, state, video)
+                bot = await channel.connect()
+                self._play_song(bot, state, video)
                 message = await ctx.send("", embed=video.get_embed())
                 await self._add_reaction_controls(message)
                 logging.info(f"Now playing '{video.title}'")
@@ -265,27 +265,27 @@ class Music:
         message = reaction.message
         if user != self.bot.user and message.author == self.bot.user:
             await message.remove_reaction(reaction, user)
-            if message.guild and message.guild.voice_client:
-                user_in_channel = user.voice and user.voice.channel and user.voice.channel == message.guild.voice_client.channel
+            if message.guild and message.guild.voice_bot:
+                user_in_channel = user.voice and user.voice.channel and user.voice.channel == message.guild.voice_bot.channel
                 permissions = message.channel.permissions_for(user)
                 guild = message.guild
                 state = self.get_state(guild)
                 if permissions.administrator or (user_in_channel and state.is_requester(user)):
-                    client = message.guild.voice_client
+                    bot = message.guild.voice_bot
                     if reaction.emoji == "⏯":
                         # pause audio
                         self._pause_audio(client)
                     elif reaction.emoji == "⏭":
                         # skip audio
-                        client.stop()
+                        bot.stop()
                     elif reaction.emoji == "⏮":
                         state.playlist.insert(
                             0, state.now_playing
                         )  # insert current song at beginning of playlist
-                        client.stop()  # skip ahead
-                elif reaction.emoji == "⏭" and self.config["vote_skip"] and user_in_channel and message.guild.voice_client and message.guild.voice_client.channel:
+                        bot.stop()  # skip ahead
+                elif reaction.emoji == "⏭" and self.config["vote_skip"] and user_in_channel and message.guild.voice_bot and message.guild.voice_bot.channel:
                     # ensure that skip was pressed, that vote skipping is enabled, the user is in the channel, and that the bot is in a voice channel
-                    voice_channel = message.guild.voice_client.channel
+                    voice_channel = message.guild.voice_bot.channel
                     self._vote_skip(voice_channel, user)
                     # announce vote
                     channel = message.channel
