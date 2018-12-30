@@ -147,6 +147,8 @@ class Music:
             channel.guild.voice_client.stop()
 
     def _play_song(self, bot, state, song):
+        player = await vc.create_ytdl_player(url)
+        player.start()
         state.now_playing = song
         state.skip_votes = set()  # clear skip votes
         source = discord.PCMVolumeTransformer(
