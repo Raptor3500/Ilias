@@ -151,6 +151,4 @@ async def setgame(str : str, *args):
   
 
 
-
-
 bot.run(os.environ.get('Token'))
