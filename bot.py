@@ -148,7 +148,7 @@ async def choose(str : str, *args):
   choices = [str, mesg]
   await bot.say('I choose {}'.format(random.choice(choices)))
   
-@bot.command(pass_context=True)
+@bot.command()
 async def setgame(str : str, *args):
   mesg = ' '.join(args)
   str = str.strip()
