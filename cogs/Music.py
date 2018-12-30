@@ -58,8 +58,8 @@ class Music:
     @commands.has_permissions(administrator=True)
     async def leave(self, ctx):
         """Leaves the voice channel, if currently in one."""
-        bot = ctx.guild.voice_client
-        state = self.get_state(ctx.guild)
+        bot = ctx.server.voice_client
+        state = self.get_state(ctx.server)
         if bot and bot.channel:
             await bot.disconnect()
             state.playlist = []
@@ -73,7 +73,7 @@ class Music:
     @commands.check(is_audio_requester)
     async def pause(self, ctx):
         """Pauses any currently playing audio."""
-        bot = ctx.guild.voice_bot
+        bot = ctx.server.voice_bot
         self._pause_audio(client)
 
     def _pause_audio(self, bot):
@@ -88,7 +88,7 @@ class Music:
     @commands.check(is_audio_requester)
     async def volume(self, ctx, volume: int):
         """Change the volume of currently playing audio (values 0-250)."""
-        state = self.get_state(ctx.guild)
+        state = self.get_state(ctx.server)
 
         # make sure volume is nonnegative
         if volume < 0:
@@ -100,7 +100,7 @@ class Music:
             if volume > max_vol:
                 volume = max_vol
 
-        bot = ctx.guild.voice_bot
+        bot = ctx.server.voice_bot
 
         state.volume = float(volume) / 100.0
         bot.source.volume = state.volume  # update the AudioSource's volume to match
@@ -110,8 +110,8 @@ class Music:
     @commands.check(in_voice_channel)
     async def skip(self, ctx):
         """Skips the currently playing song, or votes to skip it."""
-        state = self.get_state(ctx.guild)
-        bot = ctx.guild.voice_bot
+        state = self.get_state(ctx.server)
+        bot = ctx.server.voice_bot
         if ctx.channel.permissions_for(
                 ctx.author).administrator or state.is_requester(ctx.author):
             # immediately skip if requester or admin
@@ -135,7 +135,7 @@ class Music:
     def _vote_skip(self, channel, member):
         """Register a vote for `member` to skip the song playing."""
         logging.info(f"{member.name} votes to skip")
-        state = self.get_state(channel.guild)
+        state = self.get_state(channel.server)
         state.skip_votes.add(member)
         users_in_channel = len([
             member for member in channel.members if not member.bot
@@ -144,7 +144,7 @@ class Music:
                 users_in_channel) >= self.config["vote_skip_ratio"]:
             # enough members have voted to skip, so skip the song
             logging.info(f"Enough votes, skipping...")
-            channel.guild.voice_client.stop()
+            channel.server.voice_client.stop()
 
     def _play_song(self, bot, state, song):
         state.now_playing = song
@@ -166,7 +166,7 @@ class Music:
     @commands.check(audio_playing)
     async def nowplaying(self, ctx):
         """Displays information about the current song."""
-        state = self.get_state(ctx.guild)
+        state = self.get_state(ctx.server)
         message = await ctx.send("", embed=state.now_playing.get_embed())
         await self._add_reaction_controls(message)
 
@@ -174,7 +174,7 @@ class Music:
     @commands.check(audio_playing)
     async def queue(self, ctx):
         """Display the current play queue."""
-        state = self.get_state(ctx.guild)
+        state = self.get_state(ctx.server)
         await ctx.send(self._queue_text(state.playlist))
 
     def _queue_text(self, queue):
@@ -194,7 +194,7 @@ class Music:
     @commands.has_permissions(administrator=True)
     async def clearqueue(self, ctx):
         """Clears the play queue without leaving the channel."""
-        state = self.get_state(ctx.guild)
+        state = self.get_state(ctx.server)
         state.playlist = []
 
     @commands.command(aliases=["jq"])
@@ -202,7 +202,7 @@ class Music:
     @commands.has_permissions(administrator=True)
     async def jumpqueue(self, ctx, song: int, new_index: int):
         """Moves song at an index to `new_index` in queue."""
-        state = self.get_state(ctx.guild)  # get state for this guild
+        state = self.get_state(ctx.server)  # get state for this guild
         if 1 <= song <= len(state.playlist) and 1 <= new_index:
             song = state.playlist.pop(song-1)  # take song at index...
             state.playlist.insert(new_index-1, song)  # and insert it.
@@ -215,8 +215,8 @@ class Music:
     async def play(self, ctx, *, url):
         """Plays audio hosted at <url> (or performs a search for <url> and plays the first result)."""
 
-        bot = ctx.guild.voice_client
-        state = self.get_state(ctx.guild)  # get the guild's state
+        bot = ctx.server.voice_bot
+        state = self.get_state(ctx.server)  # get the guild's state
 
         if bot and bot.channel:
             try:
@@ -253,13 +253,13 @@ class Music:
         message = reaction.message
         if user != self.bot.user and message.author == self.bot.user:
             await message.remove_reaction(reaction, user)
-            if message.guild and message.guild.voice_bot:
-                user_in_channel = user.voice and user.voice.channel and user.voice.channel == message.guild.voice_bot.channel
+            if message.server and message.server.voice_bot:
+                user_in_channel = user.voice and user.voice.channel and user.voice.channel == message.server.voice_bot.channel
                 permissions = message.channel.permissions_for(user)
-                guild = message.guild
-                state = self.get_state(guild)
+                server = message.server
+                state = self.get_state(server)
                 if permissions.administrator or (user_in_channel and state.is_requester(user)):
-                    bot = message.guild.voice_bot
+                    bot = message.server.voice_bot
                     if reaction.emoji == "⏯":
                         # pause audio
                         self._pause_audio(client)
@@ -271,9 +271,9 @@ class Music:
                             0, state.now_playing
                         )  # insert current song at beginning of playlist
                         bot.stop()  # skip ahead
-                elif reaction.emoji == "⏭" and self.config["vote_skip"] and user_in_channel and message.guild.voice_bot and message.guild.voice_bot.channel:
+                elif reaction.emoji == "⏭" and self.config["vote_skip"] and user_in_channel and message.server.voice_bot and message.server.voice_bot.channel:
                     # ensure that skip was pressed, that vote skipping is enabled, the user is in the channel, and that the bot is in a voice channel
-                    voice_channel = message.guild.voice_bot.channel
+                    voice_channel = message.server.voice_bot.channel
                     self._vote_skip(voice_channel, user)
                     # announce vote
                     channel = message.channel
@@ -294,8 +294,8 @@ class Music:
             await message.add_reaction(control)
 
 
-class GuildState:
-    """Helper class managing per-guild state."""
+class ServerState:
+    """Helper class managing per-server state."""
 
     def __init__(self, config):
         self.volume = 1.0
