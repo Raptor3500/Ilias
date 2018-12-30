@@ -6,10 +6,6 @@ import logging
 import math
 from urllib import request
 
-class music():
-    def __init__(self, bot):
-        self.bot = bot
-
 
 
 async def audio_playing(ctx):
@@ -312,3 +308,6 @@ class GuildState:
 
     def is_requester(self, user):
         return self.now_playing.requested_by == user
+    
+def setup(bot):
+    bot.add_cog(music(bot))
