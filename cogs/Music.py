@@ -5,7 +5,7 @@ import youtube_dl
 import logging
 import math
 from urllib import request
-from config import toml
+import config.py
 
 
 async def audio_playing(ctx):
