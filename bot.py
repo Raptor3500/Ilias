@@ -7,7 +7,7 @@ import random
 import youtube_dl
 import nacl.secret
 
-discord.opus.load_opus(ffmpeg)
+discord.opus.load_opus()
 
 startup_extensions = [
   'cogs.message', 'cogs.Music'
