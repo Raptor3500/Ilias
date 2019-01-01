@@ -4,3 +4,4 @@ requests
 discord.py[voice]
 youtube-dl>=2018.1.14
 pynacl
+contextlib2==0.5.4
