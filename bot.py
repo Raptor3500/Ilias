@@ -5,7 +5,7 @@ import asyncio
 import os
 import random
 import youtube_dl
-import pynacl
+$pip install pynacl
 
 startup_extensions = [
   'cogs.message', 'cogs.Music'
