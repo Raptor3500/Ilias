@@ -144,7 +144,7 @@ async def setgame(str : str, *args):
       await bot.say("I am now watching " + mesg)
       
 @bot.command(pass_context=True)
-async def yt(ctx, url):
+async def play(ctx, url):
 
     author = ctx.message.author
     voice_channel = author.voice_channel
