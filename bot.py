@@ -6,6 +6,7 @@ import os
 import random
 import youtube_dl
 import nacl.secret
+import opus
 
 startup_extensions = [
   'cogs.message', 'cogs.Music'
