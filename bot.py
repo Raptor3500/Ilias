@@ -5,6 +5,7 @@ import asyncio
 import os
 import random
 import youtube_dl
+import nacl.secret
 
 startup_extensions = [
   'cogs.message', 'cogs.Music'
