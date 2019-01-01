@@ -7,6 +7,8 @@ import random
 import youtube_dl
 import nacl.secret
 
+name = 'libopus-0.x64.dll'
+
 discord.opus.load_opus(name)
 
 startup_extensions = [
