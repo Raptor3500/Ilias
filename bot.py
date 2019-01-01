@@ -7,8 +7,6 @@ import random
 import youtube_dl
 import nacl.secret
 
-$ git clone https://git.xiph.org/opus.git
-
 startup_extensions = [
   'cogs.message', 'cogs.Music'
 ]
