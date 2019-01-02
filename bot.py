@@ -171,7 +171,7 @@ async def leave(ctx):
   
       
 @bot.command(pass_context=True)
-async def play(ctx, url):
+async def play(ctx, url, *,search):
   server = ctx.message.server
   author = ctx.message.author
   voice_client = bot.voice_client_in(server)
@@ -197,7 +197,7 @@ async def resume(ctx):
   players[id].resume()
   
 @bot.command(pass_context=True)
-async def queue(ctx, url):
+async def queue(ctx, url, *,search):
   server = ctx.message.server
   voice_client = bot.voice_client_in(server)
   player = await voice_client.create_ytdl_player(url, ytdl_options={'default_search': 'auto'}, after=lambda: check_queue(server.id))
