@@ -210,7 +210,8 @@ async def queue(ctx, url):
   
 @bot.command(pass_context=True)
 async def np(ctx, url):
-  await bot.say('I am playing ') + {} + (' in the vc').format(url) 
+  player = queue[id]
+  await bot.say(player)
   
 
   
