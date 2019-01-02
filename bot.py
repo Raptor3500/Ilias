@@ -200,7 +200,7 @@ async def resume(ctx):
 async def queue(ctx, *,url,):
   server = ctx.message.server
   voice_client = bot.voice_client_in(server)
-  player = await voice_client.create_ytdl_player(url, search, after=lambda: check_queue(server.id))
+  player = await voice_client.create_ytdl_player(url, ytdl_options={'default_search': 'auto'}, after=lambda: check_queue(server.id))
   
   if server.id in queues:
     queues[server.id].append(player)
@@ -209,9 +209,10 @@ async def queue(ctx, *,url,):
   await bot.say('Video queued.')
   
 @bot.command(pass_context=True)
-async def np(ctx, url):
-  player = queue[id]
-  await bot.say(player)
+async def secretmesg(ctx, *args):
+  mesg = ' '.join(args)
+  await client.send_message(discord.Object(id='405266248314781696'), mesg)
+  
   
 
   
