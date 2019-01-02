@@ -156,7 +156,7 @@ async def join(ctx):
   channel = ctx.message.author.voice_channel
   await bot.join_voice_channel(channel)
       
-@client.command(pass_context=True)
+@bot.command(pass_context=True)
 async def play(ctx, url):
   server = ctx.message.server
   voice_client = client.voice_client_in(server)
