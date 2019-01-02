@@ -30,8 +30,8 @@ async def on_ready():
   print ("Using discord.py v" + discord.__version__)
   print ("------")
   
-@bot.command
-def loadopuslib():
+@bot.command()
+async def loadopuslib():
     if opus.is_loaded():
         return True
 
