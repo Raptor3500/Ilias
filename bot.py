@@ -196,7 +196,7 @@ async def resume(ctx):
   id = ctx.message.server.id
   players[id].resume()
   
-@bot.command(pas_context=True)
+@bot.command(pass_context=True)
 async def queue(ctx, url):
   server = ctx.message.server
   voice_client = bot.voice_client_in(server)
