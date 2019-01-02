@@ -9,13 +9,13 @@ class on_message_trolling():
     def __init__(self, bot):
         self.bot = bot
         
-        async def on_message(self, message):
-            user = message.author
-            mesg = message.content
+        async def on_message(self, message, ctx):
+            user = ctx.message.author
+            mesg = ctx.message.content
             print(f'{user} said "{mesg}"')
-            ctxmesg = input()
-            await message.channel.send(ctxmesg)
-            if message.author == self.bot.user:
+            botmesg = input()
+            await bot.send_message(channel, (botmesg))
+            if ctx.message.author == self.bot.user:
                 return
             
             
