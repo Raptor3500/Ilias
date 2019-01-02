@@ -157,7 +157,7 @@ async def join(ctx):
 @bot.command(pass_context=True)
 async def play(ctx, url):
   server = ctx.message.server
-  voice_client = bot.voice_bot_in(server)
+  voice_client = bot.voice_client_in(server)
   player = await voice_client.create_ytld_player(url)
   players[server.id] = player
   player.start()
