@@ -32,15 +32,8 @@ async def on_ready():
   
 @bot.command()
 async def loadopuslib():
-    if opus.is_loaded():
-        return True
+  opus.load_opus(opus_lib)
 
-    for opus_lib in opus_libs:
-        try:
-            opus.load_opus(opus_lib)
-            return
-        except OSError:
-            pass
 
   
   # Make me say stuff
