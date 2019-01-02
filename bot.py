@@ -33,7 +33,7 @@ async def on_ready():
   print ("Using discord.py v" + discord.__version__)
   print ("------")
   
-discord.opus.load_opus()
+discord.opus.load_opus("m")
 
 
   
