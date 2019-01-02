@@ -9,7 +9,7 @@ import nacl.secret
 
 OPUS_LIBS = ['libopus-0.x86.dll', 'libopus-0.x64.dll', 'libopus-0.dll', 'libopus.so.0', 'libopus.0.dylib']
 
-discord.opus.load_opus('ffmpeg')
+discord.opus.load_opus(opus)
 
 startup_extensions = [
   'cogs.message', 'cogs.Music'
