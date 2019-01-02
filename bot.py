@@ -155,13 +155,20 @@ async def setgame(str : str, *args):
 async def join(ctx):
   channel = ctx.message.author.voice_channel
   await bot.join_voice_channel(channel)
+  
+@bot.command(pass_context=True)
+async def leave(ctx):
+  server = ctx.message.server
+  voice_client = bot.voice_client_in(server)
+  await voice_client.disconnect()
+  
       
 @bot.command(pass_context=True)
 async def play(ctx, url):
   server = ctx.message.server
   author = ctx.message.author
   voice_client = bot.voice_client_in(server)
-  player = await voice_client.create_ytdl_player(url)
+  player = await voice_client.create_ytdl_player(url,ytdl_options={'default_search': 'auto'})
   player.start()
   
   
