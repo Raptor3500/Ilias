@@ -9,8 +9,6 @@ import nacl.secret
 
 OPUS_LIBS = ['libopus-0.x86.dll', 'libopus-0.x64.dll', 'libopus-0.dll', 'libopus.so.0', 'libopus.0.dylib']
 
-discord.opus.load_opus(opus)
-
 startup_extensions = [
   'cogs.message', 'cogs.Music'
 ]
@@ -20,6 +18,8 @@ bot.remove_command('help')
 ownerID = "274298631517896704"
 Error = 0xFF0000
 messages = ['rock', 'paper', 'scissors']
+
+players = {}
 # To remove the help command and make your own help command
 #bot.remove_command('help')
 
@@ -150,14 +150,22 @@ async def setgame(str : str, *args):
       await bot.say("I am now watching " + mesg)
       
 @bot.command(pass_context=True)
+async def join(ctx):
+  channel = ctx.message.author.voice.voice.channel
+  await bot.join_voice_channel(channel)
+      
+@bot.command(pass_context=True)
 async def play(ctx, url):
+  server = ctx.message.server
+  voice_client = bot.voice_bot_in(server)
+  player = await voice_client.create_ytld_player(url)
+  players[server.id] = player
+  player.start()
+  
+  
 
-    author = ctx.message.author
-    voice_channel = author.voice_channel
-    vc = await bot.join_voice_channel(voice_channel)
 
-    player = await vc.create_ytdl_player(url)
-    player.start()
+
       
       
 
