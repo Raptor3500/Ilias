@@ -211,7 +211,7 @@ async def queue(ctx, *,url,):
 @bot.command(pass_context=True)
 async def secretmesg(ctx, *args):
   mesg = ' '.join(args)
-  await bot.send_message(discord.Object(id='528296804882841627'), mesg)
+  await bot.send_message(discord.Object(id='528295857389305858'), mesg)
   
   
 
