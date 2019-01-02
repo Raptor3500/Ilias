@@ -175,7 +175,7 @@ async def play(ctx, url, *,search):
   server = ctx.message.server
   author = ctx.message.author
   voice_client = bot.voice_client_in(server)
-  player = await voice_client.create_ytdl_player(url, ytdl_options={'default_search': 'auto'}, after=lambda: check_queue(server.id))
+  player = await voice_client.create_ytdl_player(url, search, after=lambda: check_queue(server.id))
   players[server.id] = player
   player.start()
   
