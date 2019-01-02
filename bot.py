@@ -9,7 +9,7 @@ import nacl.secret
 
 OPUS_LIBS = ['libopus-0.x86.dll', 'libopus-0.x64.dll', 'libopus-0.dll', 'libopus.so.0', 'libopus.0.dylib']
 
-discord.opus.load_opus('libopus-0.x86.dll')
+discord.opus.load_opus('opus-1.3.tar.gz')
 
 startup_extensions = [
   'cogs.message', 'cogs.Music'
