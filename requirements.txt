@@ -7,3 +7,4 @@ pynacl
 contextlib2==0.5.4
 ffmpeg
 libopus
+https://github.com/jagrosh/MusicBot.git
