@@ -9,6 +9,7 @@ import nacl.secret
 
 OPUS_LIBS = ['libopus-0.x86.dll', 'libopus-0.x64.dll', 'libopus-0.dll', 'libopus.so.0', 'libopus.0.dylib']
 
+opus.load_opus(opus_lib)
 
 startup_extensions = [
   'cogs.message', 'cogs.Music'
@@ -29,10 +30,6 @@ async def on_ready():
   print ("With the ID: " + bot.user.id)
   print ("Using discord.py v" + discord.__version__)
   print ("------")
-  
-@bot.command()
-async def loadopuslib():
-  opus.load_opus(opus_lib)
 
 
   
