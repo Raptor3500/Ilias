@@ -209,8 +209,8 @@ async def queue(ctx, url):
   await bot.say('Video queued.')
   
 @bot.command(pass_context=True)
-async def np(url):
-  await bot.say('I am playing ') + (url) + (' in the vc') 
+async def np(ctx, url):
+  await bot.say('I am playing ') + {} + (' in the vc').format(url) 
   
 
   
