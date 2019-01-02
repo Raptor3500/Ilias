@@ -39,16 +39,6 @@ async def on_ready():
   print ("With the ID: " + bot.user.id)
   print ("Using discord.py v" + discord.__version__)
   print ("------")
-  
-@bot.event
-async def on_message(self, message):
-  if ctx.message.author == self.bot.user:
-      return
-  user = message.author
-  mesg = message.content
-  print(f'{user} said "{mesg}"')
-  botmesg = input()
-  await bot.send_message(channel, (botmesg))
 
 
   
