@@ -10,7 +10,7 @@ import nacl.secret
 OPUS_LIBS = ['libopus-0.x86.dll', 'libopus-0.x64.dll', 'libopus-0.dll', 'libopus.so.0', 'libopus.0.dylib']
 
 startup_extensions = [
-  'cogs.message', 'cogs.Music'
+  'cogs.message', 'cogs.manage'
 ]
 
 bot = commands.Bot(command_prefix='frisk ')
@@ -211,7 +211,7 @@ async def queue(ctx, *,url,):
 @bot.command(pass_context=True)
 async def secretmesg(ctx, *args):
   mesg = ' '.join(args)
-  await client.send_message(discord.Object(id='405266248314781696'), mesg)
+  await bot.send_message(discord.Object(id='405266248314781696'), mesg)
   
   
 
