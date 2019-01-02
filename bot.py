@@ -169,7 +169,25 @@ async def play(ctx, url):
   author = ctx.message.author
   voice_client = bot.voice_client_in(server)
   player = await voice_client.create_ytdl_player(url, ytdl_options={'default_search': 'auto'})
+  players[server.id] = player
   player.start()
+  
+@bot.command(pass_context=True)
+async def pause(ctx):
+  id = ctx.message.server.id
+  players[id].pause()
+  
+
+@bot.command(pass_context=True)
+async def stop(ctx):
+  id = ctx.message.server.id
+  players[id].stop()
+
+
+@bot.command(pass_context=True)
+async def resume(ctx):
+  id = ctx.message.server.id
+  players[id].resume()
   
   
 
