@@ -7,4 +7,3 @@ pynacl
 contextlib2==0.5.4
 ffmpeg -i input.mp4 output.avi
 discord-musicbot
--U discord.py[voice]
