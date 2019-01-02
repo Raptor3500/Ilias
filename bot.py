@@ -160,7 +160,7 @@ async def join(ctx):
 async def play(ctx, url):
   server = ctx.message.server
   author = ctx.message.author
-  voice_client = voice_client_in(server)
+  voice_client = bot.voice_client_in(server)
   player = await voice_client.create_ytdl_player(url)
   player.start()
   
