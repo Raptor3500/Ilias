@@ -32,6 +32,8 @@ async def on_ready():
   print ("With the ID: " + bot.user.id)
   print ("Using discord.py v" + discord.__version__)
   print ("------")
+  
+discord.opus.load_opus(name)
 
 
   
