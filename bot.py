@@ -18,6 +18,8 @@ bot.remove_command('help')
 ownerID = "274298631517896704"
 Error = 0xFF0000
 messages = ['rock', 'paper', 'scissors']
+client = commands.Bot(command_prefix='frisk ')
+
 
 players = {}
 # To remove the help command and make your own help command
@@ -154,11 +156,11 @@ async def join(ctx):
   channel = ctx.message.author.voice_channel
   await bot.join_voice_channel(channel)
       
-@bot.command(pass_context=True)
+@client.command(pass_context=True)
 async def play(ctx, url):
   server = ctx.message.server
-  voice_client = bot.voice_client_in(server)
-  player = await bot.create_ytld_player(url)
+  voice_client = client.voice_client_in(server)
+  player = await voice_client.create_ytld_player(url)
   player.start()
   
   
