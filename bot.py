@@ -31,7 +31,7 @@ async def on_ready():
   print ("------")
   
 @bot.command
-def load_opus_lib():
+def loadopuslib():
     if opus.is_loaded():
         return True
 
