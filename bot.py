@@ -9,6 +9,17 @@ import nacl.secret
 
 OPUS_LIBS = ['libopus-0.x86.dll', 'libopus-0.x64.dll', 'libopus-0.dll', 'libopus.so.0', 'libopus.0.dylib']
 
+
+startup_extensions = [
+  'cogs.message', 'cogs.Music'
+]
+
+bot = commands.Bot(command_prefix='frisk ')
+bot.remove_command('help')
+ownerID = "274298631517896704"
+Error = 0xFF0000
+messages = ['rock', 'paper', 'scissors']
+
 @bot.event
 def load_opus_lib():
     if opus.is_loaded():
@@ -20,16 +31,6 @@ def load_opus_lib():
             return
         except OSError:
             pass
-
-startup_extensions = [
-  'cogs.message', 'cogs.Music'
-]
-
-bot = commands.Bot(command_prefix='frisk ')
-bot.remove_command('help')
-ownerID = "274298631517896704"
-Error = 0xFF0000
-messages = ['rock', 'paper', 'scissors']
 
 # To remove the help command and make your own help command
 #bot.remove_command('help')
