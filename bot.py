@@ -33,7 +33,7 @@ async def on_ready():
   print ("Using discord.py v" + discord.__version__)
   print ("------")
   
-discord.opus.load_opus(name)
+discord.opus.load_opus(OPUS_LIBS)
 
 
   
