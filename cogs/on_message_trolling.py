@@ -10,7 +10,7 @@ class on_message_trolling():
         self.bot = bot
         
     async def on_message(self, message):
-        if ctx.message.author == self.bot.user:
+        if message.author == self.bot.user:
             return
         user = message.author
         mesg = message.content
