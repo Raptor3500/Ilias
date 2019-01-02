@@ -19,8 +19,18 @@ bot.remove_command('help')
 ownerID = "274298631517896704"
 Error = 0xFF0000
 messages = ['rock', 'paper', 'scissors']
+# To remove the help command and make your own help command
+#bot.remove_command('help')
 
 @bot.event
+async def on_ready():
+  print ("------")
+  print ("My name is " + bot.user.name)
+  print ("With the ID: " + bot.user.id)
+  print ("Using discord.py v" + discord.__version__)
+  print ("------")
+  
+@bot.command
 def load_opus_lib():
     if opus.is_loaded():
         return True
@@ -32,16 +42,6 @@ def load_opus_lib():
         except OSError:
             pass
 
-# To remove the help command and make your own help command
-#bot.remove_command('help')
-
-@bot.event
-async def on_ready():
-  print ("------")
-  print ("My name is " + bot.user.name)
-  print ("With the ID: " + bot.user.id)
-  print ("Using discord.py v" + discord.__version__)
-  print ("------")
   
   # Make me say stuff
 @bot.command(pass_context=True)
