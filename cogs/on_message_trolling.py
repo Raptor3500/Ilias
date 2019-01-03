@@ -14,7 +14,6 @@ class on_message_trolling():
         mesg = message.content
         print(f'{user} said "{mesg}"')
         botmesg = input()
-    try:
         await bot.send_message(channel, (botmesg))
         if message.author == self.bot.user:
             return
