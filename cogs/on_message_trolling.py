@@ -16,8 +16,6 @@ class on_message_trolling():
         mesg = message.content
         print(f'{user} said "{mesg}"')
         botmesg = input()
-        except EOFError:
-            return
         await bot.send_message(channel, (botmesg))
             
             
