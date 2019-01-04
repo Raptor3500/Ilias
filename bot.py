@@ -213,6 +213,13 @@ async def secretmesg(ctx, *args):
   if ctx.message.author.id in ownerID:
     mesg = ' '.join(args)
     await bot.send_message(discord.Object(id='528295857389305858'), mesg)
+    
+@bot.command(pass_context=True)
+async def secretdm(ctx, *args):
+  if ctx.message.author.id in ownerID:
+    mesg = ' '.join(args)
+    friend = '462099439784427523'
+    await bot.send_message(friend, mesg)
   
   
 
