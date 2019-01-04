@@ -218,7 +218,7 @@ async def secretmesg(ctx, *args):
 async def secretdm(ctx, *args, user):
   if ctx.message.author.id in ownerID:
     mesg = ' '.join(args)
-    user = '462099439784427523'
+    user = discord.utils.get(bot.get_all_members(), id='462099439784427523')
     await bot.send_message(user, mesg)
   
   
