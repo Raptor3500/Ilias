@@ -188,9 +188,10 @@ async def play(ctx, *,url):
 
     player = await voice.create_ytdl_player(url, ytdl_options={'default_search': 'auto'}, after=toggle_next)
     await songs.put(player)
+    bot.loop.create_task(audio_player_task())
+    player.start()
 
-bot.loop.create_task(audio_player_task())
-player.start()
+
   
 @bot.command(pass_context=True)
 async def pause(ctx):
