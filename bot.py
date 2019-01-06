@@ -179,12 +179,12 @@ async def leave(ctx):
   await voice_client.disconnect()
   
       
-@client.command(pass_context=True)
+@bot.command(pass_context=True)
 async def play(ctx, *,url):
-  if not client.is_voice_connected(ctx.message.server):
-    voice = await client.join_voice_channel(ctx.message.author.voice_channel)
+  if not bot.is_voice_connected(ctx.message.server):
+    voice = await bot.join_voice_channel(ctx.message.author.voice_channel)
   else:
-    voice = client.voice_client_in(ctx.message.server)
+    voice = bot.voice_client_in(ctx.message.server)
 
     player = await voice.create_ytdl_player(url, ytdl_options={'default_search': 'auto'}, after=toggle_next)
     await songs.put(player)
