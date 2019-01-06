@@ -19,16 +19,24 @@ ownerID = "274298631517896704"
 Error = 0xFF0000
 messages = ['rock', 'paper', 'scissors']
 client = commands.Bot(command_prefix='frisk ')
+play_next_song = asyncio.Event()
+
 
 
 players = {}
 queues = {}
 
-def check_queue(id):
-  if queues[id] != []:
-    player = queues[id].pop(0)
-    players[id] = player
-    player.start()
+async def audio_player_task():
+    while True:
+        play_next_song.clear()
+        current = await songs.get()
+        current.start()
+        await play_next_song.wait()
+
+
+def toggle_next():
+    bot.loop.call_soon_threadsafe(play_next_song.set)
+
 # To remove the help command and make your own help command
 #bot.remove_command('help')
 
@@ -170,14 +178,17 @@ async def leave(ctx):
   await voice_client.disconnect()
   
       
-@bot.command(pass_context=True)
+@client.command(pass_context=True)
 async def play(ctx, *,url):
-  server = ctx.message.server
-  author = ctx.message.author
-  voice_client = bot.voice_client_in(server)
-  player = await voice_client.create_ytdl_player(url, ytdl_options={'default_search': 'auto'}, after=lambda: check_queue(server.id))
-  players[server.id] = player
-  player.start()
+  if not client.is_voice_connected(ctx.message.server):
+    voice = await client.join_voice_channel(ctx.message.author.voice_channel)
+  else:
+    voice = client.voice_client_in(ctx.message.server)
+
+    player = await voice.create_ytdl_player(url, ytdl_options={'default_search': 'auto'}, after=toggle_next)
+    await songs.put(player)
+
+bot.loop.create_task(audio_player_task())
   
 @bot.command(pass_context=True)
 async def pause(ctx):
@@ -195,18 +206,6 @@ async def stop(ctx):
 async def resume(ctx):
   id = ctx.message.server.id
   players[id].resume()
-  
-@bot.command(pass_context=True)
-async def queue(ctx, *,url,):
-  server = ctx.message.server
-  voice_client = bot.voice_client_in(server)
-  player = await voice_client.create_ytdl_player(url, ytdl_options={'default_search': 'auto'}, after=lambda: check_queue(server.id))
-  
-  if server.id in queues:
-    queues[server.id].append(player)
-  else:
-      queues[server.id] = [player]
-  await bot.say('Video queued.')
   
 @bot.command(pass_context=True)
 async def secretmesg(ctx, *args):
