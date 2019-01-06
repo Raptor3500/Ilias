@@ -19,6 +19,7 @@ ownerID = "274298631517896704"
 Error = 0xFF0000
 messages = ['rock', 'paper', 'scissors']
 client = commands.Bot(command_prefix='frisk ')
+songs = asyncio.Queue()
 play_next_song = asyncio.Event()
 
 
