@@ -188,7 +188,7 @@ async def play(ctx, *,url):
 
     player = await voice.create_ytdl_player(url, ytdl_options={'default_search': 'auto'}, after=toggle_next)
     await songs.put(player)
-    player.start
+    player.start()
 
 bot.loop.create_task(audio_player_task())
   
