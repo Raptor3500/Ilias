@@ -194,10 +194,6 @@ async def play(ctx, *,url):
         player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
         players[server.id] = player
         player.start()
-        except KeyError:
-          player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
-          players[server.id] = player
-          player.start()
     
 
 
