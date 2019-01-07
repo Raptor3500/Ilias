@@ -177,7 +177,7 @@ async def leave(ctx):
 async def play(ctx, *,url):
   server = ctx.message.server
   voice_client = bot.voice_client_in(server)
-  await bot.join_voice_channel(ctx.message.author.voioce_channel)
+  await bot.join_voice_channel(ctx.message.author.voice_channel)
   if players[server.id].is_playing():
     player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
     queues[server.id] = [player]
