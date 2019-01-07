@@ -30,8 +30,6 @@ queues = {}
 async def audio_player_task():
   while True:
     play_next_song.clear()
-    current = await songs.get()
-    current.start()
     await play_next_song.wait()
 
 
