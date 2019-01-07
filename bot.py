@@ -27,14 +27,11 @@ play_next_song = asyncio.Event()
 players = {}
 queues = {}
 
-async def audio_player_task():
-  while True:
-    play_next_song.clear()
-    await play_next_song.wait()
-
-
-def toggle_next():
-  bot.loop.call_soon_threadsafe(play_next_song.set)
+def check_queue(id):
+  if queues[id] != []:
+    player = queues[id].pop(0)
+    players[id] = player
+    player.start()
 
 # To remove the help command and make your own help command
 #bot.remove_command('help')
@@ -179,21 +176,29 @@ async def leave(ctx):
       
 @bot.command(pass_context=True)
 async def play(ctx, *,url):
+  server = ctx.message.server
+  voice_client = bot.voice_client_in(server)
   if not bot.is_voice_connected(ctx.message.server):
     await bot.join_voice_channel(ctx.message.author.voice_channel)
-    voice_bot = bot.voice_client_in(ctx.message.server)
+    try:
+      if players[server.id].is_playing():
+        player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
 
-    player = await voice_bot.create_ytdl_player(url, ytdl_options={'default_search': 'auto'}, after=lambda: toggle_next)
-    await songs.put(player)
-    bot.loop.create_task(audio_player_task())
-    player.start()
-  if bot.is_voice_connected(ctx.message.server):
-    voice_bot = bot.voice_client_in(ctx.message.server)
-
-    player = await voice_bot.create_ytdl_player(url, ytdl_options={'default_search': 'auto'}, after=lambda: toggle_next)
-    await songs.put(player)
-    bot.loop.create_task(audio_player_task())
-    player.start()
+        if server.id in queues:
+          queues[server.id].append(player)
+        else:
+          queues[server.id] = [player]
+          await bot.say('Video queued.')
+          
+      else:
+        player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
+        players[server.id] = player
+        player.start()
+        except KeyError:
+          player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
+          players[server.id] = player
+          player.start()
+    
 
 
   
