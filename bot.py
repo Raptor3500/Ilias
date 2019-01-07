@@ -178,19 +178,16 @@ async def play(ctx, *,url):
   server = ctx.message.server
   voice_client = bot.voice_client_in(server)
   if not bot.is_voice_connected(ctx.message.server):
-    await bot.join_voice_channel(ctx.message.author.voice_channel)
+    await bot.join_voice_channel(ctx.message.author.voioce_channel)
     try:
       if players[server.id].is_playing():
         player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
         queues[server.id] = [player]
-        await bot.say('Video queued.')  
+        await bot.say('Video Queued!')
       else:
         player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
-        players[server.id] = player
+        player[server.id] = player
         player.start()
-    
-
-
   
 @bot.command(pass_context=True)
 async def pause(ctx):
