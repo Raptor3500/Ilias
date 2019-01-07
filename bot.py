@@ -182,13 +182,8 @@ async def play(ctx, *,url):
     try:
       if players[server.id].is_playing():
         player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
-
-        if server.id in queues:
-          queues[server.id].append(player)
-        else:
-          queues[server.id] = [player]
-          await bot.say('Video queued.')
-          
+        queues[server.id] = [player]
+        await bot.say('Video queued.')  
       else:
         player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
         players[server.id] = player
