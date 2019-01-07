@@ -28,15 +28,15 @@ players = {}
 queues = {}
 
 async def audio_player_task():
-    while True:
-        play_next_song.clear()
-        current = await songs.get()
-        current.start()
-        await play_next_song.wait()
+  while True:
+    play_next_song.clear()
+    current = await songs.get()
+    current.start()
+    await play_next_song.wait()
 
 
 def toggle_next():
-    bot.loop.call_soon_threadsafe(play_next_song.set)
+  bot.loop.call_soon_threadsafe(play_next_song.set)
 
 # To remove the help command and make your own help command
 #bot.remove_command('help')
@@ -182,11 +182,17 @@ async def leave(ctx):
 @bot.command(pass_context=True)
 async def play(ctx, *,url):
   if not bot.is_voice_connected(ctx.message.server):
-    voice = await bot.join_voice_channel(ctx.message.author.voice_channel)
-  else:
-    voice = bot.voice_client_in(ctx.message.server)
+    await bot.join_voice_channel(ctx.message.author.voice_channel)
+    voice_bot = bot.voice_client_in(ctx.message.server)
 
-    player = await voice.create_ytdl_player(url, ytdl_options={'default_search': 'auto'}, after=lambda: toggle_next)
+    player = await voice_bot.create_ytdl_player(url, ytdl_options={'default_search': 'auto'}, after=lambda: toggle_next)
+    await songs.put(player)
+    bot.loop.create_task(audio_player_task())
+    player.start()
+  if bot.is_voice_connected(ctx.message.server):
+    voice_bot = bot.voice_client_in(ctx.message.server)
+
+    player = await voice_bot.create_ytdl_player(url, ytdl_options={'default_search': 'auto'}, after=lambda: toggle_next)
     await songs.put(player)
     bot.loop.create_task(audio_player_task())
     player.start()
