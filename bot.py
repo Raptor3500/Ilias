@@ -32,6 +32,8 @@ def check_queue(id):
     player = queues[id].pop(0)
     players[id] = player
     player.start()
+  else:
+    del players[id]
 
 # To remove the help command and make your own help command
 #bot.remove_command('help')
@@ -178,14 +180,19 @@ async def play(ctx, *,url):
   server = ctx.message.server
   voice_client = bot.voice_client_in(server)
   await bot.join_voice_channel(ctx.message.author.voice_channel)
-  if players[server.id].is_playing():
+  if server.id not in players:
     player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
-    queues[server.id] = [player]
-    await bot.say('Video Queued!')
+    players[server.id] = player
+    player.start()
   else:
     player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
-    player[server.id] = player
-    player.start()
+
+    if server.id in queues:
+        queues[server.id].append(player)
+    else:
+        queues[server.id] = [player]
+    await bot.say('Video queued.')
+
   
 @bot.command(pass_context=True)
 async def pause(ctx):
