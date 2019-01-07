@@ -179,7 +179,6 @@ async def leave(ctx):
 async def play(ctx, *,url):
   server = ctx.message.server
   voice_client = bot.voice_client_in(server)
-  await bot.join_voice_channel(ctx.message.author.voice_channel)
   if server.id not in players:
     server = ctx.message.server
     voice_client = bot.voice_client_in(server)
