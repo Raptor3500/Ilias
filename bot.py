@@ -174,26 +174,26 @@ async def leave(ctx):
   await voice_client.disconnect()
   
       
-@bot.command(pass_context=True)
-async def play(ctx, *,url):
-  server = ctx.message.server
-  voice_client = bot.voice_client_in(server)
-  if not bot.is_voice_connected(ctx.message.server):
-    await bot.join_voice_channel(ctx.message.author.voice_channel)
-    try:
-      if players[server.id].is_playing():
-        player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
+  @bot.command(pass_context=True)
+  async def play(ctx, *,url):
+    server = ctx.message.server
+    voice_client = bot.voice_client_in(server)
+    if not bot.is_voice_connected(ctx.message.server):
+      await bot.join_voice_channel(ctx.message.author.voice_channel)
+      try:
+        if players[server.id].is_playing():
+          player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
 
-        if server.id in queues:
-          queues[server.id].append(player)
-        else:
-          queues[server.id] = [player]
-          await bot.say('Video queued.')
+          if server.id in queues:
+            queues[server.id].append(player)
+          else:
+            queues[server.id] = [player]
+            await bot.say('Video queued.')
           
-      else:
-        player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
-        players[server.id] = player
-        player.start()
+        else:
+          player = await voice_client.create_ytdl_player(url, after=lambda: check_queue(server.id))
+          players[server.id] = player
+          player.start()
     
 
 
