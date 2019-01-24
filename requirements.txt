@@ -2,7 +2,7 @@ discord.py
 asyncio
 requests
 discord.py[voice]
-update youtube-dl
+upgrade youtube-dl
 pynacl
 contextlib2==0.5.4
 ffmpeg -i input.mp4 output.avi
