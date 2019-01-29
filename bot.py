@@ -13,7 +13,7 @@ startup_extensions = [
   'cogs.message', 'cogs.manage', 'cogs.on_message_trolling'
 ]
 
-bot = commands.Bot(command_prefix='frisk ')
+bot = commands.Bot(command_prefix='kazoku ')
 bot.remove_command('help')
 ownerID = "274298631517896704"
 Error = 0xFF0000
