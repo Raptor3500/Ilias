@@ -15,7 +15,7 @@ startup_extensions = [
 
 bot = commands.Bot(command_prefix='ilias ')
 bot.remove_command('help')
-ownerID = "274298631517896704"
+ownerID = "279836533052145665"
 Error = 0xFF0000
 messages = ['rock', 'paper', 'scissors']
 client = commands.Bot(command_prefix='ilias ')
@@ -52,13 +52,14 @@ async def on_ready():
 @bot.command(pass_context=True)
 async def say(ctx, *args):
     """Make me say your message"""
-  channel = ctx.message.channel
-  mesg = ' '.join(args)
-  await bot.delete_message(ctx.message)
-  await bot.send_typing(channel)
-  await asyncio.sleep(1)
-  await bot.say(mesg)
-  print (ctx.message.author.id + " or " + ctx.message.author.name + " made me say '{}'".format(mesg))
+    if ctx.message.author.id in ownerID:
+      channel = ctx.message.channel
+      mesg = ' '.join(args)
+      await bot.delete_message(ctx.message)
+      await bot.send_typing(channel)
+      await asyncio.sleep(1)
+      await bot.say(mesg)
+      print (ctx.message.author.id + " or " + ctx.message.author.name + " made me say '{}'".format(mesg))
         
 @bot.command(pass_context=True)
 async def invite(ctx):
